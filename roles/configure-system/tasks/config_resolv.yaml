@@ -25,5 +25,5 @@
   loop:
     - {'name': 'nameserver', 'ip': '1.1.1.1' }
     - {'name': 'nameserver', 'ip': '8.8.8.8' }
-    - {'name': 'nameserver', 'ip': '127.0.0.1' }
+    - {'name': '#nameserver', 'ip': '127.0.0.1' }
     - {'name': 'search', 'ip': 'localdomain' }
