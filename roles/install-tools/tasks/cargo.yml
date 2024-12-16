@@ -1,0 +1,14 @@
+---
+- name: Ensure cargo environment variables in ~/.zshrc
+  ansible.builtin.lineinfile:
+    dest: '~/.zshrc'
+    regexp: "^export PATH=$PATH:$HOME/.cargo/bin"
+    line: "export PATH=$PATH:$HOME/.cargo/bin"
+    insertbefore: EOF
+    state: present
+
+- name: Installing cargo-tools
+  community.general.cargo:
+    name: starship
+    locked: true
+    state: latest

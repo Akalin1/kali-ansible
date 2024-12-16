@@ -1,0 +1,49 @@
+---
+# Go for apt installation
+- name: Ensure Go environment variables in ~/.zshrc
+  ansible.builtin.lineinfile:
+    dest: '~/.zshrc'
+    regexp: "^export {{ item.name }}={{ item.value }}"
+    line: "export {{ item.name }}={{ item.value }}"
+    insertbefore: EOF
+    state: present
+  become: false  # current user
+  loop:
+    - { name: 'GOROOT' , value: '/usr/lib/go' }
+    - { name: 'GOPATH' , value: '$HOME/go' }
+    - { name: 'PATH' , value: '$PATH:$GOROOT/bin:$GOPATH/bin' }
+    # Goproxy for user , if not used, comment it out
+    - { name: 'GOPROXY' , value: 'https://goproxy.cn,direct' }
+
+- name: Install go-tools
+  ansible.builtin.shell:
+    cmd: /usr/bin/go install {{ item.url }}
+  become: false # current user
+  # Goproxy for go-tools install , if not used, comment it out
+  environment:
+    GOPROXY: "{{ GOPROXY }}"
+  loop:
+    - { tool: 'gf' , url: 'github.com/tomnomnom/gf@latest'}
+    - { tool: 'unfurl', url: 'github.com/tomnomnom/unfurl@latest'}
+    - { tool: 'anew', url: 'github.com/tomnomnom/anew@latest'}
+    - { tool: 'meg', url: 'github.com/tomnomnom/meg@latest'}
+    - { tool: 'subzy', url: 'github.com/PentestPad/subzy@latest'}
+    - { tool: 'qsreplace', url: 'github.com/tomnomnom/qsreplace@latest'}
+    - { tool: 'shosubgo', url: 'github.com/incogbyte/shosubgo@latest'}
+    - { tool: 'assetfinder', url: 'github.com/tomnomnom/assetfinder@latest'}
+    - { tool: 'kerbrute' , url: 'github.com/ropnop/kerbrute@latest' }
+    - { tool: 'gau', url: 'github.com/lc/gau/v2/cmd/gau@latest'}
+    - { tool: 'waybackurls', url: 'github.com/tomnomnom/waybackurls@latest'}
+    - { tool: 'httprobe', url: 'github.com/tomnomnom/httprobe@latest'}
+    - { tool: 'subfinder', url: 'github.com/projectdiscovery/subfinder/v2/cmd/subfinder@latest'}
+    - { tool: 'asnmap', url: 'github.com/projectdiscovery/asnmap/cmd/asnmap@latest'}
+    - { tool: 'httpx' , url: 'github.com/projectdiscovery/httpx/cmd/httpx@latest' }
+    - { tool: 'katana' , url: 'github.com/projectdiscovery/katana/cmd/katana@latest'}
+    - { tool: 'tlsx' , url: 'github.com/projectdiscovery/tlsx/cmd/tlsx@latest'}
+    - { tool: 'dnsx', url: 'github.com/projectdiscovery/dnsx/cmd/dnsx@latest'}
+    - { tool: 'nuclei' , url: 'github.com/projectdiscovery/nuclei/v3/cmd/nuclei@latest'}
+    - { tool: 'gowitness', url: 'github.com/sensepost/gowitness@latest'}
+    - { tool: 'gitdorks_go', url: 'github.com/damit5/gitdorks_go@latest'}
+    - { tool: 'github-subdomains', url: 'github.com/gwen001/github-subdomains@latest'}
+    - { tool: 'webpaste', url: 'github.com/xnl-h4ck3r/webpaste@latest'}
+    

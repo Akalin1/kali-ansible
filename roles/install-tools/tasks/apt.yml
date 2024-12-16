@@ -1,0 +1,47 @@
+---
+- name: Update apt cache
+  ansible.builtin.apt:
+    #force_apt_get: true
+    update_cache: true
+    cache_valid_time: 3600
+  become: true
+  become_method: ansible.builtin.sudo
+
+- name: Upgrade apt packages
+  ansible.builtin.apt:
+    #force_apt_get: true
+    upgrade: true
+  become: true
+  become_method: ansible.builtin.sudo
+  # register: apt_update_result
+
+- name: Installing apt-packages
+  ansible.builtin.apt:
+  # add packages to here
+    name:
+      - apt-transport-https
+      - fonts-firacode
+      - jq
+      - pipx
+      - golang
+      - git
+      - snapd
+      - cargo
+      - cmake
+      - neofetch
+      - ntpdate
+      - exiftool
+      - poppler-utils
+      - flameshot
+      - amass
+      - neo4j
+      - bloodhound
+    state: present
+    #force_apt_get: true
+  become: true
+  become_method: ansible.builtin.sudo
+  # register: package_result
+
+# - name: Show
+#   ansible.builtin.debug:
+#     var: package_result

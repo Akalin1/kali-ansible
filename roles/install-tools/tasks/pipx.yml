@@ -1,0 +1,47 @@
+---
+#python3 -m pip install pipx
+# - name: Ensure Install pipx
+#   ansible.builtin.pip:
+#     name: pipx
+#     break_system_packages: true
+#     state: latest
+#   register: pipx_install
+
+- name: Ensure pipx environment variables in ~/.zshrc
+  ansible.builtin.lineinfile:
+    dest: '~/.zshrc'
+    regexp: '^export PATH=$PATH:$HOME/.local/bin'
+    line: 'export PATH=$PATH:$HOME/.local/bin'
+    state: present
+  become: false
+
+- name: Installing pipx-tools (from pypi)
+  community.general.pipx:
+    executable: "/usr/bin/pipx"
+    name: "{{ item }}"
+    state: present
+  loop:
+    - impacket
+    - uro
+    - certipy-ad
+    - poetry
+    - bloodyad
+  environment: 
+    http_proxy: "{{ http_proxy }}"
+  register: pipx_result
+
+- name: Installing pipx-tools (from github)
+  community.general.pipx:
+    executable: "/usr/bin/pipx"
+    name: "{{ item.name }}"
+    source: "{{ item.source }}"
+    state: install
+  environment: 
+    http_proxy: "{{ http_proxy }}"
+  loop:
+    - { name: 'enum4linux-ng', source: 'git+https://github.com/cddmp/enum4linux-ng' }
+    - { name: 'waymore', source: 'git+https://github.com/xnl-h4ck3r/waymore' }
+
+# - name: Show
+#   ansible.builtin.debug:
+#     msg: "Finish"

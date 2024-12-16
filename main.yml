@@ -1,0 +1,19 @@
+# http_proxy set in roles/vars/main.yml
+---
+- name: Init
+  hosts: localhost
+  # set global proxy
+  vars: 
+    proxy: "http://192.168.10.1:10800"
+  roles:
+    - configure-system
+    - configure-shell
+    - install-tools
+    - install-docker
+    - configure-browser
+    - install-vscode
+    
+  # tasks:
+  # - name: Print ansible_distribution_release
+  #   ansible.builtin.debug:
+  #     msg: "{{ ansible_distribution_release }}"
